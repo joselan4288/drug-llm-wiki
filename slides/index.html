@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自律神經藥物入門</title>
+<meta name="description" content="從受體推出藥效與副作用：給初學者的自律神經藥物教學簡報，內容全部來自臺灣常用藥物 LLM Wiki。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ecebe4; --paper:#fbfaf6; --ink:#1d2725; --ink2:#4a5754; --ink3:#7b8582; --line:#dcd9ce;
+  --accent:#2f7d6d; --accent-ink:#1f5a4e; --accent-soft:#e2efe9;
+  --sym:#c0603a; --sym-soft:#f7e7df; --para:#3b6ea8; --para-soft:#e5edf7;
+  --warn:#b4472f; --warn-soft:#f8e9e3;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --serif:"Noto Serif TC","Songti TC",serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1312; --paper:#161c1b; --ink:#e4ebe8; --ink2:#aab6b2; --ink3:#7c8885; --line:#2c3633;
+  --accent:#5fb7a3; --accent-ink:#8fd3c3; --accent-soft:#1c302b;
+  --sym:#e58b66; --sym-soft:#35231b; --para:#86aee0; --para-soft:#1b2635; --warn:#ec8d74; --warn-soft:#34201b; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0e1312; --paper:#161c1b; --ink:#e4ebe8; --ink2:#aab6b2; --ink3:#7c8885; --line:#2c3633;
+  --accent:#5fb7a3; --accent-ink:#8fd3c3; --accent-soft:#1c302b;
+  --sym:#e58b66; --sym-soft:#35231b; --para:#86aee0; --para-soft:#1b2635; --warn:#ec8d74; --warn-soft:#34201b; color-scheme:dark;}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+body{overflow:hidden}
+#deck{position:fixed;inset:0;display:grid;place-items:center}
+#stage{width:1280px;height:720px;position:relative;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--paper);border-radius:18px;box-shadow:0 10px 40px rgb(0 0 0/.12);
+  padding:56px 72px 64px;display:none;flex-direction:column;overflow:hidden}
+.slide.active{display:flex}
+.slide h1{font-family:var(--serif);font-size:58px;line-height:1.2;margin:0 0 18px;letter-spacing:.02em}
+.slide h2{font-family:var(--serif);font-size:40px;line-height:1.25;margin:0 0 22px}
+.kicker{font-size:15px;letter-spacing:.16em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.slide p,.slide li{font-size:24px;line-height:1.6;color:var(--ink)}
+.slide p{margin:0 0 14px}
+.muted{color:var(--ink2)!important}
+.small{font-size:19px!important}
+.drug{font-family:var(--mono);font-weight:500;color:var(--accent-ink)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:32px;flex:1;min-height:0}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.card h3{margin:0 0 8px;font-size:22px}
+.card p,.card li{font-size:20px;line-height:1.55;margin:0}
+.card ul{margin:0;padding-left:1.1em}
+.tag{display:inline-block;font-size:15px;font-weight:700;padding:2px 10px;border-radius:99px;margin:0 4px 4px 0}
+.t-sym{background:var(--sym-soft);color:var(--sym)} .t-para{background:var(--para-soft);color:var(--para)} .t-acc{background:var(--accent-soft);color:var(--accent-ink)}
+.warnbox{background:var(--warn-soft);border-left:5px solid var(--warn);border-radius:12px;padding:14px 20px}
+.warnbox p{margin:0;font-size:21px}
+table{border-collapse:collapse;width:100%;font-size:20px}
+th{text-align:left;font-size:16px;color:var(--ink2);border-bottom:2px solid var(--line);padding:8px 10px}
+td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top;line-height:1.45}
+.chain{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 18px}
+.chain span{font-size:22px;padding:8px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.chain b{color:var(--ink3);font-size:22px}
+.cite{position:absolute;left:72px;right:72px;bottom:22px;display:flex;justify-content:space-between;font-size:14px;color:var(--ink3)}
+.cite a{color:var(--ink2)}
+svg text{font-family:var(--sans)}
+details{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:12px}
+summary{font-size:22px;cursor:pointer;font-weight:500}
+details p{font-size:20px;margin:10px 0 0}
+#hud{position:fixed;left:0;right:0;bottom:0;height:4px;background:transparent;z-index:5}
+#bar{height:100%;background:var(--accent);width:0;transition:width .25s}
+#ctrl{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;z-index:6}
+#ctrl button,#ctrl a{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--paper);color:var(--ink2);border-radius:9px;padding:6px 11px;cursor:pointer;text-decoration:none}
+#count{position:fixed;left:16px;bottom:14px;font-size:14px;color:var(--ink3);font-family:var(--mono);z-index:6}
+/* 窄螢幕：改成直向捲動 */
+@media (max-width:760px){
+  body{overflow:auto}
+  #deck{position:static;display:block;padding:12px 16px 80px}
+  #stage{width:auto;height:auto;transform:none!important}
+  .slide{position:relative;display:flex!important;padding:26px 20px 52px;margin-bottom:16px;border-radius:14px}
+  .slide h1{font-size:32px} .slide h2{font-size:25px;margin-bottom:14px}
+  .slide p,.slide li{font-size:17px} .card p,.card li{font-size:16px} .card h3{font-size:18px}
+  .cols,.cols3{grid-template-columns:1fr;gap:12px}
+  table{font-size:15px} th{font-size:13px} td{padding:7px 6px}
+  .chain span,.chain b{font-size:16px}
+  .warnbox p,details p,summary{font-size:16px}
+  .cite{left:20px;right:20px;bottom:14px;font-size:12px;flex-direction:column;gap:2px}
+  #hud,#count,#ctrl .nav{display:none}
+  .tbl-wrap{overflow-x:auto}
+}
+@media print{body{overflow:visible}#deck{position:static;display:block}#stage{transform:none!important;width:auto;height:auto}
+  .slide{position:relative;display:flex!important;break-after:page;box-shadow:none;width:1280px;height:720px}#hud,#ctrl,#count{display:none}}
+</style>
+</head>
+<body>
+<div id="deck"><div id="stage">
+
+<!-- 1 -->
+<section class="slide" data-cite="index">
+  <div style="margin:auto 0">
+    <div class="kicker">藥理入門 · 自律神經</div>
+    <h1>自律神經藥物入門<br>從受體推出藥效</h1>
+    <p class="muted" style="max-width:860px">看到一個沒聽過的藥，只要知道它「加強還是阻斷哪個受體」，就能推出它能治什麼、會有什麼副作用、誰不能用。</p>
+    <p class="small muted">內容全部來自〈臺灣常用藥物 LLM Wiki〉，每張投影片右下角標示出處頁面。</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-cite="concept-agonist-antagonist">
+  <div class="kicker">這堂課只教一個方法</div>
+  <h2>兩個問題，推出整個藥</h2>
+  <div class="chain"><span>① 這個藥<b>加強</b>還是<b>阻斷</b>？</span><b>→</b><span>② 哪一個受體？</span><b>→</b><span>③ 查受體平常在哪做什麼</span></div>
+  <div class="cols3" style="margin-top:8px">
+    <div class="card"><h3>療效</h3><p>你想要的那個器官的效果</p></div>
+    <div class="card"><h3>副作用</h3><p>同一個受體在<b>其他器官</b>的效果</p></div>
+    <div class="card"><h3>禁忌</h3><p>那個效果對某些病人特別危險</p></div>
+  </div>
+  <p style="margin-top:26px">促效劑（agonist）模仿身體的訊號、讓受體活化；拮抗劑（antagonist）佔住受體但不活化它，擋掉身體的訊號。</p>
+  <p class="muted">療效與副作用是同一件事的兩面。</p>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-cite="concept-autonomic-nervous-system">
+  <div class="kicker">第一步</div>
+  <h2>兩套系統，最後一站決定效果</h2>
+  <svg viewBox="0 0 1136 330" width="100%" role="img" aria-labelledby="t3 d3" preserveAspectRatio="xMidYMin meet" style="flex:1;min-height:0;margin-top:10px">
+    <title id="t3">自律神經訊號傳遞路徑</title>
+    <desc id="d3">交感與副交感都在神經節用 ACh 打 N 受體；最後一站交感放正腎上腺素打 α、β 受體，副交感放 ACh 打 M 受體；汗腺例外。</desc>
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="currentColor"/></marker></defs>
+    <g font-size="20" style="color:var(--ink3)">
+      <!-- 交感 -->
+      <text x="0" y="62" font-weight="700" fill="var(--sym)">交感</text>
+      <text x="0" y="86" font-size="15" fill="var(--ink3)">戰鬥或逃跑</text>
+      <rect x="110" y="36" width="150" height="56" rx="12" fill="var(--bg)" stroke="var(--line)"/><text x="185" y="70" text-anchor="middle" fill="var(--ink)">中樞</text>
+      <line x1="262" y1="64" x2="388" y2="64" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="392" y="30" width="230" height="68" rx="34" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="507" y="60" text-anchor="middle" fill="var(--accent-ink)" font-weight="700">神經節</text><text x="507" y="84" text-anchor="middle" font-size="16" fill="var(--accent-ink)">ACh → N 受體</text>
+      <line x1="624" y1="64" x2="750" y2="64" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="754" y="30" width="250" height="68" rx="12" fill="var(--sym-soft)" stroke="var(--sym)"/><text x="879" y="60" text-anchor="middle" fill="var(--sym)" font-weight="700">正腎上腺素</text><text x="879" y="84" text-anchor="middle" font-size="16" fill="var(--sym)">→ α、β 受體</text>
+      <line x1="1006" y1="64" x2="1060" y2="64" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/><text x="1066" y="70" fill="var(--ink)">器官</text>
+      <!-- 副交感 -->
+      <text x="0" y="172" font-weight="700" fill="var(--para)">副交感</text>
+      <text x="0" y="196" font-size="15" fill="var(--ink3)">休息與消化</text>
+      <rect x="110" y="146" width="150" height="56" rx="12" fill="var(--bg)" stroke="var(--line)"/><text x="185" y="180" text-anchor="middle" fill="var(--ink)">中樞</text>
+      <line x1="262" y1="174" x2="388" y2="174" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="392" y="140" width="230" height="68" rx="34" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="507" y="170" text-anchor="middle" fill="var(--accent-ink)" font-weight="700">神經節</text><text x="507" y="194" text-anchor="middle" font-size="16" fill="var(--accent-ink)">ACh → N 受體</text>
+      <line x1="624" y1="174" x2="750" y2="174" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="754" y="140" width="250" height="68" rx="12" fill="var(--para-soft)" stroke="var(--para)"/><text x="879" y="170" text-anchor="middle" fill="var(--para)" font-weight="700">ACh</text><text x="879" y="194" text-anchor="middle" font-size="16" fill="var(--para)">→ M 受體</text>
+      <line x1="1006" y1="174" x2="1060" y2="174" stroke="currentColor" stroke-width="2" marker-end="url(#ar)"/><text x="1066" y="180" fill="var(--ink)">器官</text>
+      <!-- 標示 -->
+      <text x="507" y="250" text-anchor="middle" font-size="17" fill="var(--ink2)">共通站：兩套都一樣</text>
+      <text x="879" y="250" text-anchor="middle" font-size="17" fill="var(--ink2)">藥物動手腳的地方</text>
+      <line x1="879" y1="226" x2="879" y2="212" stroke="var(--ink3)" stroke-width="1.5"/>
+      <line x1="507" y1="226" x2="507" y2="212" stroke="var(--ink3)" stroke-width="1.5"/>
+      <rect x="110" y="276" width="1000" height="48" rx="10" fill="var(--warn-soft)"/>
+      <text x="130" y="307" font-size="18" fill="var(--warn)" font-weight="700">例外：汗腺</text>
+      <text x="240" y="307" font-size="18" fill="var(--ink)">由交感支配，但末梢放 ACh、打 M 受體 → 擋 M 的藥會讓人不流汗</text>
+    </g>
+  </svg>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-cite="concept-receptor-map">
+  <div class="kicker">第二步：受體地圖</div>
+  <h2>同一個器官，兩套系統各有一個受體</h2>
+  <div class="cols3" style="grid-template-columns:repeat(3,1fr);gap:16px">
+    <div class="card"><h3>眼</h3><p><span class="tag t-sym">α₁</span>瞳孔放大</p><p><span class="tag t-para">M₃</span>縮瞳</p></div>
+    <div class="card"><h3>心臟</h3><p><span class="tag t-sym">β₁</span>心跳與收縮力↑</p><p><span class="tag t-para">M₂</span>心跳↓</p></div>
+    <div class="card"><h3>支氣管</h3><p><span class="tag t-sym">β₂</span>擴張</p><p><span class="tag t-para">M₃</span>收縮</p></div>
+    <div class="card"><h3>血管</h3><p><span class="tag t-sym">α₁</span>收縮 → 血壓↑</p><p class="muted"><span class="tag t-acc">α₂</span>中樞：血壓↓、鎮靜</p></div>
+    <div class="card"><h3>膀胱、攝護腺</h3><p><span class="tag t-sym">α₁</span>尿滯留　<span class="tag t-sym">β₃</span>膀胱放鬆</p><p><span class="tag t-para">M₃</span>收縮</p></div>
+    <div class="card"><h3>肝、骨骼肌</h3><p><span class="tag t-sym">β₂</span>血糖↑、血鉀↓、手抖</p></div>
+  </div>
+  <p class="small muted" style="margin-top:16px"><span class="tag t-sym">橘</span>交感（α、β）　<span class="tag t-para">藍</span>副交感（M）　記憶法：「β₁ 一顆心、β₂ 兩片肺」</p>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-cite="concept-agonist-antagonist,concept-beta-receptor">
+  <div class="kicker">練習一</div>
+  <h2><span class="drug">Salbutamol</span>（泛得林 Ventolin）</h2>
+  <div class="chain"><span>加強</span><b>+</b><span>β₂</span><b>→</b><span>查表：支氣管擴張、血鉀↓、手抖</span></div>
+  <div class="cols">
+    <div class="card"><h3>想要的效果</h3><p>支氣管擴張 → <b>氣喘緩解</b>（短效，SABA）</p></div>
+    <div class="card"><h3>同一個受體在別處</h3><p>骨骼肌 → <b>手抖</b><br>血鉀↓ → <b>低血鉀</b></p></div>
+  </div>
+  <div class="warnbox" style="margin-top:20px"><p>長效的 β₂ 促效劑（LABA，例如 <span class="drug">Formoterol</span>、<span class="drug">Salmeterol</span>）在氣喘<b>絕不可單獨使用</b>，一定要和吸入型類固醇合用——氣喘的本質是發炎。</p></div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-cite="concept-muscarinic-receptor,concept-agonist-antagonist">
+  <div class="kicker">練習二</div>
+  <h2><span class="drug">Atropine</span>（阿托品）</h2>
+  <div class="chain"><span>阻斷</span><b>+</b><span>M</span><b>→</b><span>解除副交感：心跳加快、分泌減少、瞳孔放大</span></div>
+  <div class="cols">
+    <div class="card"><h3>用途</h3><ul><li>症狀性心搏過緩（擋掉 M₂ 的減速）</li><li>有機磷中毒（擋掉過多的 ACh）</li></ul></div>
+    <div class="card"><h3>副作用與禁忌</h3><ul><li>會進腦 → 譫妄</li><li>膀胱收縮被擋 → 尿滯留</li><li>閉角性青光眼、攝護腺肥大禁忌</li></ul></div>
+  </div>
+  <p class="small muted" style="margin-top:18px">對照：<span class="drug">Glycopyrrolate</span>（Robinul）也擋 M，但不進腦，中樞副作用極少。</p>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-cite="concept-anticholinergic-toxidrome">
+  <div class="kicker">把 M 全部擋掉會怎樣</div>
+  <h2>抗膽鹼中毒：熱、乾、紅、瞎、瘋、脹</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>口訣</th><th>表現</th><th>口訣</th><th>表現</th></tr>
+    <tr><td>熱如兔</td><td>發燒</td><td>瞎如蝙蝠</td><td>瞳孔放大</td></tr>
+    <tr><td>乾如骨</td><td>無汗</td><td>瘋如帽匠</td><td>譫妄</td></tr>
+    <tr><td>紅如甜菜</td><td>潮紅</td><td>脹如酒瓶</td><td>尿滯留</td></tr>
+  </table></div>
+  <div class="cols" style="margin-top:22px;flex:0">
+    <div class="card"><h3>怎麼和擬交感中毒分？</h3><p>兩者都瞳孔放大、體溫上升；<b>抗膽鹼皮膚乾，擬交感大量出汗</b>。</p></div>
+    <div class="card"><h3>臨床提醒</h3><p><span class="drug">Atropine</span> 會造成譫妄與幻覺，不能用來鎮靜躁動病人。</p></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-cite="concept-cholinergic-crisis">
+  <div class="kicker">反方向</div>
+  <h2>有機磷中毒：ACh 分解不掉</h2>
+  <p>有機磷農藥卡住膽鹼酯酶並「老化」，ACh 無法分解，M 與 N 受體同時被過度刺激。</p>
+  <div class="cols">
+    <div class="card"><h3><span class="tag t-para">M</span>SLUDGE</h3><p>流涎、流淚、排尿、腹瀉、腸胃不適、嘔吐；加上縮瞳、心搏過緩、支氣管分泌物暴增</p></div>
+    <div class="card"><h3><span class="tag t-acc">N</span>肌肉</h3><p>肌肉顫動、無力，嚴重時呼吸肌麻痺</p></div>
+  </div>
+  <div class="chain" style="margin-top:20px"><span><span class="drug">Atropine</span> 大劑量：只擋 M，終點是分泌物乾</span><b>+</b><span><span class="drug">Pralidoxime</span>（2-PAM）：讓酵素恢復，須在老化前給</span></div>
+  <p class="small muted">為什麼兩個都要？Atropine 擋不到 N 受體造成的肌肉無力。</p>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-cite="concept-selectivity">
+  <div class="kicker">為什麼同類藥有好幾個</div>
+  <h2>選擇性：只打想要的受體</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>想要的效果</th><th>選擇性較高的藥</th><th>換來的好處</th></tr>
+    <tr><td>減慢心跳，不收縮支氣管</td><td><span class="drug">Bisoprolol</span>（β₁）</td><td>氣喘者相對安全</td></tr>
+    <tr><td>放鬆攝護腺</td><td><span class="drug">Tamsulosin</span>（α₁A）</td><td>血壓影響較小</td></tr>
+    <tr><td>放鬆膀胱</td><td><span class="drug">Solifenacin</span>（M₃）</td><td>抗膽鹼副作用較少</td></tr>
+    <tr><td>放鬆膀胱，完全不碰 M</td><td><span class="drug">Mirabegron</span>（β₃）</td><td>無抗膽鹼副作用</td></tr>
+  </table></div>
+  <p style="margin-top:18px"><b>「不進腦」也是一種選擇性</b>：<span class="drug">Ipratropium</span>、<span class="drug">Tiotropium</span> 用吸入的，只在呼吸道作用；<span class="drug">Oxybutynin</span> 會進腦，老人易譫妄。</p>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-cite="concept-alpha-receptor">
+  <div class="kicker">α 受體</div>
+  <h2>太緊的攝護腺，和交感的煞車</h2>
+  <div class="cols">
+    <div class="card"><h3>阻斷 α₁：放鬆攝護腺</h3>
+      <p>攝護腺肥大有兩個原因：<b>太緊</b>（α₁A 收縮）和<b>太大</b>（腺體增生）。α₁ 阻斷劑處理「太緊」，幾天就見效。</p>
+      <p class="small" style="margin-top:8px"><span class="drug">Tamsulosin</span>（Harnalidge）、<span class="drug">Doxazosin</span>（可迅 Doxaben，首劑姿勢性低血壓）</p></div>
+    <div class="card"><h3>加強 α₂：踩煞車</h3>
+      <p>α₂ 減少正腎上腺素釋放 → 血壓↓。</p>
+      <p class="small" style="margin-top:8px"><span class="drug">Clonidine</span>（Catapres）：<b>突然停藥會反彈性高血壓</b></p></div>
+  </div>
+  <div class="warnbox" style="margin-top:18px"><p><b>嗜鉻細胞瘤：先 α 阻斷、再 β 阻斷。</b>順序顛倒會造成高血壓危象。<span class="muted">（推理：先擋 β，血管只剩 α₁ 的收縮。）</span></p></div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-cite="concept-beta-receptor,concept-do-not-stop-abruptly">
+  <div class="kicker">β 阻斷劑</div>
+  <h2>β 阻斷劑的三個陷阱</h2>
+  <div class="cols3">
+    <div class="card"><h3>① 氣喘</h3><p>非選擇性藥物（如 <span class="drug">Propranolol</span>）擋到 β₂，氣喘禁用；<span class="drug">Bisoprolol</span>（康肯 Concor）β₁ 高選擇性，相對安全。</p></div>
+    <div class="card"><h3>② 低血糖</h3><p>低血糖時的心悸、手抖被擋掉，<b>只剩冒汗</b>。</p></div>
+    <div class="card"><h3>③ 突然停藥</h3><p>受體上調造成反彈：反彈性心搏過速、心絞痛。<b>不可突然停藥</b>。</p></div>
+  </div>
+  <p class="small muted" style="margin-top:22px">在心血管：高血壓第一線不是 β 阻斷劑，但它是心衰竭（HFrEF）四大支柱之一。</p>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-cite="concept-anaphylaxis-epinephrine">
+  <div class="kicker">一個藥打三個受體</div>
+  <h2>為什麼過敏性休克只有腎上腺素能救</h2>
+  <svg viewBox="0 0 1136 300" width="100%" role="img" aria-labelledby="t12 d12" preserveAspectRatio="xMidYMin meet" style="flex:1;min-height:0">
+    <title id="t12">Epinephrine 同時作用於三個受體</title>
+    <desc id="d12">α₁ 收縮血管減輕水腫、β₁ 強心、β₂ 擴張支氣管並抑制肥大細胞釋放。</desc>
+    <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="var(--ink3)"/></marker></defs>
+    <rect x="40" y="110" width="250" height="80" rx="40" fill="var(--accent)"/>
+    <text x="165" y="158" text-anchor="middle" font-size="26" font-weight="700" fill="var(--paper)">Epinephrine</text>
+    <g stroke="var(--ink3)" stroke-width="2.5" fill="none">
+      <path d="M292 140 C 380 60, 420 50, 500 50" marker-end="url(#ar2)"/>
+      <path d="M292 150 L 500 150" marker-end="url(#ar2)"/>
+      <path d="M292 160 C 380 240, 420 250, 500 250" marker-end="url(#ar2)"/>
+    </g>
+    <g font-size="21">
+      <rect x="506" y="18" width="600" height="64" rx="12" fill="var(--sym-soft)"/><text x="526" y="58" fill="var(--sym)" font-weight="700">α₁</text><text x="580" y="58" fill="var(--ink)">收縮血管、減輕水腫 → 拉回血壓</text>
+      <rect x="506" y="118" width="600" height="64" rx="12" fill="var(--sym-soft)"/><text x="526" y="158" fill="var(--sym)" font-weight="700">β₁</text><text x="580" y="158" fill="var(--ink)">強心 → 增加心輸出</text>
+      <rect x="506" y="218" width="600" height="64" rx="12" fill="var(--sym-soft)"/><text x="526" y="258" fill="var(--sym)" font-weight="700">β₂</text><text x="580" y="258" fill="var(--ink)">擴張支氣管、抑制肥大細胞釋放</text>
+    </g>
+  </svg>
+  <p class="small"><b>0.3–0.5 mg 大腿外側肌注</b>（1 mg/mL，即 1:1000）；不要改成皮下注射。抗組織胺與類固醇不能取代它。心跳停止的劑量完全不同（1 mg IV）。</p>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-cite="concept-potassium">
+  <div class="kicker">跨系統</div>
+  <h2>同一個機轉，是副作用也是治療</h2>
+  <svg viewBox="0 0 1136 290" width="100%" role="img" aria-labelledby="t13 d13" preserveAspectRatio="xMidYMin meet" style="flex:1;min-height:0">
+    <title id="t13">受體與血鉀</title>
+    <desc id="d13">β₂ 與胰島素把鉀推進細胞，使血鉀下降；Succinylcholine 在高風險病人讓血鉀上升。</desc>
+    <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="context-stroke"/></marker></defs>
+    <rect x="0" y="0" width="1136" height="290" rx="16" fill="var(--bg)"/>
+    <text x="40" y="44" font-size="20" fill="var(--ink2)">血液</text>
+    <ellipse cx="568" cy="175" rx="300" ry="95" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
+    <text x="568" y="182" text-anchor="middle" font-size="22" fill="var(--ink2)">細胞內</text>
+    <g stroke-width="3" fill="none">
+      <path d="M210 70 L 330 125" stroke="var(--accent)" marker-end="url(#ar3)"/>
+      <path d="M926 70 L 806 125" stroke="var(--accent)" marker-end="url(#ar3)"/>
+      <path d="M568 80 L 568 22" stroke="var(--warn)" marker-end="url(#ar3)"/>
+    </g>
+    <text x="40" y="100" font-size="20" fill="var(--accent-ink)" font-weight="700">β₂：Salbutamol 霧化</text>
+    <text x="1096" y="100" text-anchor="end" font-size="20" fill="var(--accent-ink)" font-weight="700">胰島素＋葡萄糖</text>
+    <text x="590" y="44" font-size="19" fill="var(--warn)" font-weight="700">Succinylcholine（燒傷、擠壓傷、長期臥床）→ 致命性高血鉀</text>
+  </svg>
+  <p class="small">氣喘病人用 <span class="drug">Salbutamol</span>：低血鉀是<b>副作用</b>。高血鉀急救第二步「把鉀推進細胞」：用的正是 Salbutamol 霧化——是<b>治療</b>。</p>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-cite="concept-nicotinic-receptor">
+  <div class="kicker">N 受體</div>
+  <h2>肌肉鬆弛劑與兩種逆轉</h2>
+  <p>插管時讓肌肉完全鬆弛，但<b>意識與痛覺還在</b>，一定要同時給鎮靜與止痛。</p>
+  <div class="cols">
+    <div class="card"><h3><span class="drug">Succinylcholine</span>（去極化型）</h3><p>起效 30–60 秒；沒有逆轉劑，5–10 分鐘內自行消退。燒傷、擠壓傷者易致命性高血鉀。</p></div>
+    <div class="card"><h3><span class="drug">Rocuronium</span>（非去極化型）</h3><p>可用 <span class="drug">Sugammadex</span> 直接包起來完全逆轉；或用 <span class="drug">Neostigmine</span> 增加 ACh 與它競爭。</p></div>
+  </div>
+  <div class="warnbox" style="margin-top:18px"><p>為什麼 <span class="drug">Neostigmine</span> 一定要配 <span class="drug">Glycopyrrolate</span>？ACh 變多不只作用在 N，M 受體也被過度刺激（心搏過緩、分泌暴增、支氣管收縮），要先擋住 M。</p></div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-cite="concept-beta-receptor,concept-muscarinic-receptor,concept-alpha-receptor">
+  <div class="kicker">自我測驗：點開看答案</div>
+  <h2>用受體推推看</h2>
+  <details><summary>Q1　氣喘病人可以用 Propranolol 嗎？</summary>
+    <p>不行。<span class="drug">Propranolol</span> 是非選擇性 β 阻斷劑，會擋到 β₂，而 β₂ 負責支氣管擴張；非選擇性藥物在氣喘禁用。</p></details>
+  <details><summary>Q2　攝護腺肥大的長輩吃了感冒藥，為什麼尿不出來？</summary>
+    <p>第一代抗組織胺有抗膽鹼作用，擋住讓膀胱收縮的 M₃；含 Pseudoephedrine 的感冒藥也會誘發急性尿滯留。</p></details>
+  <details><summary>Q3　Clonidine 為什麼不能突然停？</summary>
+    <p>它加強 α₂，等於踩著交感的煞車；突然停藥，煞車放掉，會反彈性高血壓。</p></details>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-cite="index">
+  <div class="kicker">總結</div>
+  <h2>帶走一個方法</h2>
+  <div class="chain"><span>加強或阻斷？</span><b>→</b><span>哪個受體？</span><b>→</b><span>那個受體在哪裡做什麼？</span></div>
+  <div class="cols3">
+    <div class="card"><h3>療效與副作用</h3><p>是同一個受體在不同器官的效果</p></div>
+    <div class="card"><h3>選擇性</h3><p>決定副作用多寡，也是同類藥有好幾個的原因</p></div>
+    <div class="card"><h3>停藥與順序</h3><p>β 阻斷劑、Clonidine 不可突然停；嗜鉻細胞瘤先 α 後 β</p></div>
+  </div>
+  <p class="small" style="margin-top:24px">延伸閱讀（Wiki）：<a href="../wiki.html#concept-receptor-map">受體地圖</a>・<a href="../wiki.html#concept-selectivity">選擇性</a>・<a href="../wiki.html#concept-potassium">受體與血鉀</a>・<a href="../wiki.html#agg-drug-index">跨篇藥名索引</a>・<a href="../wiki.html#index">Wiki 目錄</a></p>
+</section>
+
+</div></div>
+<div id="hud"><div id="bar"></div></div>
+<div id="count"></div>
+<div id="ctrl"><button class="nav" id="prev" aria-label="上一張">←</button><button class="nav" id="next" aria-label="下一張">→</button><button id="theme" aria-label="切換深淺色">◐</button><a href="../index.html">首頁</a></div>
+<script>
+(() => {
+  const slides = [...document.querySelectorAll('.slide')];
+  const titles = {};
+  // 每張投影片底部加上出處（data-cite → Wiki 頁）
+  slides.forEach((s, i) => {
+    const ids = (s.dataset.cite || '').split(',').map(x => x.trim()).filter(Boolean);
+    const div = document.createElement('div');
+    div.className = 'cite';
+    div.innerHTML = `<span>自律神經藥物入門 · ${i + 1}／${slides.length}</span><span>出處：${ids.map(id => `<a href="../wiki.html#${id}">${id}</a>`).join('、')}</span>`;
+    s.appendChild(div);
+  });
+  let cur = 0;
+  const fromHash = () => { const n = parseInt(location.hash.slice(1), 10); return n >= 1 && n <= slides.length ? n - 1 : 0; };
+  function show(n) {
+    cur = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+    document.getElementById('bar').style.width = ((cur + 1) / slides.length * 100) + '%';
+    document.getElementById('count').textContent = `${cur + 1} / ${slides.length}`;
+    if (location.hash !== '#' + (cur + 1)) history.replaceState(null, '', '#' + (cur + 1));
+  }
+  function fit() {
+    const st = document.getElementById('stage');
+    if (innerWidth <= 760) { st.style.transform = 'none'; return; }
+    const k = Math.min((innerWidth - 32) / 1280, (innerHeight - 48) / 720);
+    st.style.transform = `scale(${k})`;
+  }
+  addEventListener('resize', fit);
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+  });
+  document.getElementById('next').onclick = () => show(cur + 1);
+  document.getElementById('prev').onclick = () => show(cur - 1);
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null || innerWidth <= 760) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+  document.getElementById('theme').onclick = () => {
+    const r = document.documentElement;
+    const dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    r.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('slides-theme', r.dataset.theme); } catch (_) {}
+  };
+  try { const t = localStorage.getItem('slides-theme'); if (t) document.documentElement.dataset.theme = t; } catch (_) {}
+  fit(); show(fromHash());
+  addEventListener('hashchange', () => show(fromHash()));
+})();
+</script>
+</body>
+</html>
