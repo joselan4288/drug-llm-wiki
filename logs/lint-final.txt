@@ -1,0 +1,32 @@
+[W9] concept-agonist-antagonist: 「| 藥 | 動作 | 對照受體表 | 療效 | 同一機轉帶來的副作用／禁」與引用來源重疊度低
+[W9] concept-agonist-antagonist: 「| Atropine | 阻斷 M | 心跳↓ 的訊號被擋、分泌被擋 |」與引用來源重疊度低
+[W9] concept-alpha-receptor: 「（推理：先擋 β 會讓 β₂ 的血管擴張消失，只剩 α₁ 收縮血管」與引用來源重疊度低
+[W9] concept-anaphylaxis-epinephrine: 「| 受體 | Epinephrine 做了什麼 | 對過敏性休克的意義 」與引用來源重疊度低
+[W9] concept-anaphylaxis-epinephrine: 「- 心跳停止的劑量完全不同：1 mg IV」與引用來源重疊度低
+[W9] concept-anticholinergic-toxidrome: 「阻斷 M 受體的效果一次出現太多，就是抗膽鹼中毒」與引用來源重疊度低
+[W9] concept-autonomic-nervous-system: 「| | 交感神經 | 副交感神經 |」與引用來源重疊度低
+[W9] concept-autonomic-nervous-system: 「| 情境 | 「戰鬥或逃跑」 | 「休息與消化」 |」與引用來源重疊度低
+[W9] concept-autonomic-nervous-system: 「| 最後一站放的物質 | 正腎上腺素 | 乙醯膽鹼（ACh） |」與引用來源重疊度低
+[W9] concept-autonomic-nervous-system: 「| 作用的受體 | α、β 受體 | M（蕈毒鹼型）受體 |」與引用來源重疊度低
+[W9] concept-autonomic-nervous-system: 「所以阻斷 M 受體的藥會讓人「不流汗」」與引用來源重疊度低
+[W9] concept-autonomic-nervous-system: 「藥物幾乎都是在「最後一站」動手腳：**加強**或**阻斷**某一個受體」與引用來源重疊度低
+[W9] concept-autonomic-nervous-system: 「講義的建議讀法正是如此：先讀受體表，再看各類藥是加強還是阻斷哪一個受體，」與引用來源重疊度低
+[W9] concept-beta-receptor: 「| 受體 | 在哪裡 | 活化後 |」與引用來源重疊度低
+[W9] concept-beta-receptor: 「但它是 HFrEF 四大支柱之一（ARNI + β 阻斷劑 + 醛固酮拮」與引用來源重疊度低
+[W9] concept-do-not-stop-abruptly: 「| Clonidine（α₂ 促效劑） | 反彈性高血壓 | 交感的煞車」與引用來源重疊度低
+[W9] concept-do-not-stop-abruptly: 「以下是推理（非來源原文）：長期擋住 β 受體，細胞會多做一些受體來補償」與引用來源重疊度低
+[W9] concept-do-not-stop-abruptly: 「藥一停，身體自己的正腎上腺素面對比平常更多的受體，效果就被放大」與引用來源重疊度低
+[W9] concept-muscarinic-receptor: 「| 受體 | 在哪裡 | 活化後 |」與引用來源重疊度低
+[W9] concept-muscarinic-receptor: 「很多「不是抗膽鹼藥」的藥也帶有抗膽鹼作用，加總起來就是老人的「抗膽鹼負擔」與引用來源重疊度低
+[W9] concept-potassium: 「受體表寫著 β₂ 活化後「血鉀↓」」與引用來源重疊度低
+[W9] concept-potassium: 「- 副作用面：Salbutamol 的副作用就有低血鉀」與引用來源重疊度低
+[W9] concept-potassium: 「| 3. 排出體外 | Furosemide、降鉀劑、洗腎 | 數小時 」與引用來源重疊度低
+[W9] concept-receptor-map: 「推理：「擴張支氣管」因此有兩條路——加強 β₂，或阻斷 M₃」與引用來源重疊度低
+[W9] concept-selectivity: 「| 想要的效果 | 選擇性較高的藥 | 換來的好處 | 來源 |」與引用來源重疊度低
+[W9] concept-selectivity: 「| 放鬆攝護腺，但少影響血壓 | Tamsulosin（α₁A 選擇性）」與引用來源重疊度低
+[W9] concept-selectivity: 「藥物能否進入腦部，決定有沒有中樞副作用」與引用來源重疊度低
+[W9] concept-selectivity: 「- Atropine 會進腦 → 可能譫妄、幻覺」與引用來源重疊度低
+[W9] concept-selectivity: 「- Ipratropium、Tiotropium 用吸入給藥，不進腦，只」與引用來源重疊度低
+[W9] concept-selectivity: 「它是非選擇性 β 阻斷劑，所以氣喘者也要小心」與引用來源重疊度低
+
+頁面 101；錯誤 0（無）；警告 30

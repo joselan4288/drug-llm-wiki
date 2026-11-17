@@ -1,0 +1,11 @@
+[L7] concept-agonist-antagonist: 本文用了〔01-autonomic#二〕但 frontmatter sources 沒有列
+[L7] concept-agonist-antagonist: 本文用了〔01-autonomic#六〕但 frontmatter sources 沒有列
+[L5] concept-agonist-antagonist: 段落缺來源標記：「- **促效劑（agonist）**：模仿身體自己的訊號，讓…」
+[L5] concept-agonist-antagonist: 段落缺來源標記：「**先問：這個藥加強還是阻斷哪個受體？再查受體表：那個受體平…」
+[L7] concept-anticholinergic-toxidrome: 本文用了〔01-autonomic#九〕但 frontmatter sources 沒有列
+[L5] concept-autonomic-nervous-system: 段落缺來源標記：「自律神經管的是我們不用刻意控制的功能：心跳、血壓、呼吸道粗細…」
+[L7] concept-cholinergic-crisis: 本文用了〔01-autonomic#三〕但 frontmatter sources 沒有列
+[L7] concept-receptor-map: 本文用了〔01-autonomic#九〕但 frontmatter sources 沒有列
+[L5] concept-selectivity: 段落缺來源標記：「同一類藥之所以有很多個，多半是在追求**更專一**：只打想要…」
+
+頁面 100；錯誤 9（L5 4 個、L7 5 個）
