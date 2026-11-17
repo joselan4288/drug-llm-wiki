@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>藥物 LLM Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pill"></span>藥物 LLM Wiki</a>
+  <nav>
+    <a href="#index">目錄</a><a href="#agg-drug-index">藥名索引</a><a href="#log">紀錄</a><a href="slides/index.html">簡報</a>
+  </nav>
+  <button class="icon" id="theme" aria-label="切換深淺色">◐</button>
+</header>
+<main class="wrap">
+  <div id="meta" class="meta"></div>
+  <article id="page" class="prose"><p class="muted">載入中…</p></article>
+</main>
+<footer class="foot">Wiki 內容來自作者的《臺灣常用藥物講義》，僅供學習，不構成醫療建議。規則見 <a href="https://github.com/joselan4288/drug-llm-wiki/blob/main/CLAUDE.md">CLAUDE.md</a></footer>
+<script src="assets/vendor/marked.min.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const TYPE = { concept: '概念頁（AI 撰寫）', class: '類別頁（腳本產生）', aggregate: '彙整頁（腳本產生）', index: '目錄', log: '紀錄', raw: '原始資料（不可修改）' };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function parse(text) {
+    const m = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    if (!m) return { meta: {}, body: text };
+    const meta = {};
+    m[1].split('\n').forEach(l => {
+      const i = l.indexOf(': '); if (i < 0) return;
+      const k = l.slice(0, i).trim(), v = l.slice(i + 2).trim();
+      meta[k] = v.startsWith('[') ? v.slice(1, -1).split(',').map(x => x.trim()).filter(Boolean) : v;
+    });
+    return { meta, body: m[2] };
+  }
+
+  function linkify(md) {
+    return md
+      .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, (_, id, t) => `[${t}](#${id})`)
+      .replace(/\[\[([^\]]+)\]\]/g, (_, id) => `[${id}](#${id})`)
+      .replace(/〔([0-9]{2}-[a-z-]+)#([一二三四五六七八九十]+)〕/g, (_, f, n) => `<a class="src" href="#raw:${f}" title="原始講義 ${f} 第${n}節">〔${f}#${n}〕</a>`);
+  }
+
+  async function load() {
+    const h = decodeURIComponent(location.hash.slice(1)) || 'index';
+    const isRaw = h.startsWith('raw:');
+    const path = isRaw ? `raw/${h.slice(4)}.md` : `wiki/${h}.md`;
+    let text;
+    try {
+      const r = await fetch(path, { cache: 'no-cache' });
+      if (!r.ok) throw new Error(r.status);
+      text = await r.text();
+    } catch (e) {
+      $('#page').innerHTML = `<h1>找不到頁面</h1><p>${esc(path)} 不存在。<a href="#index">回到目錄</a></p>`;
+      $('#meta').innerHTML = ''; return;
+    }
+    const { meta, body } = parse(text);
+    const type = isRaw ? 'raw' : (meta.type || '');
+    $('#page').innerHTML = marked.parse(linkify(body));
+    $('#page').querySelectorAll('table').forEach(t => { const w = document.createElement('div'); w.className = 'tw'; t.replaceWith(w); w.appendChild(t); });
+    const chips = [];
+    if (type) chips.push(`<span class="chip c-${type}">${TYPE[type] || type}</span>`);
+    if (meta.sources && meta.sources.length && !isRaw)
+      chips.push('<span class="lab">來源</span>' + meta.sources.map(s => `<a class="chip" href="#raw:${s.split('#')[0]}">${esc(s)}</a>`).join(''));
+    if (meta.related && meta.related.length)
+      chips.push('<span class="lab">相關</span>' + meta.related.map(r => `<a class="chip" href="#${r}">${esc(r)}</a>`).join(''));
+    if (isRaw && meta.source) chips.push(`<span class="lab">出處</span><span class="chip">${esc(meta.source)}</span>`);
+    $('#meta').innerHTML = chips.join(' ');
+    const h1 = $('#page h1');
+    document.title = (h1 ? h1.textContent + '｜' : '') + '藥物 LLM Wiki';
+    scrollTo(0, 0);
+  }
+
+  $('#theme').onclick = () => {
+    const r = document.documentElement;
+    const dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    r.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('wiki-theme', r.dataset.theme); } catch (_) {}
+  };
+  try { const t = localStorage.getItem('wiki-theme'); if (t) document.documentElement.dataset.theme = t; } catch (_) {}
+  addEventListener('hashchange', load);
+  load();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>藥物 LLM Wiki</title>
+<meta name="description" content="以《臺灣常用藥物講義》12 篇為來源建立的 LLM Wiki，並用它產生自律神經藥物教學 HTML 簡報；含 loop/graph 設計、實際執行紀錄與反思。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pill"></span>藥物 LLM Wiki</a>
+  <nav><a href="wiki.html#index">Wiki</a><a href="slides/index.html">簡報</a><a href="#graph">流程</a><a href="#reflect">反思</a></nav>
+  <button class="icon" id="theme" aria-label="切換深淺色">◐</button>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div class="k">LLM WIKI · 第十週作業</div>
+    <h1>臺灣常用藥物 LLM Wiki<br>與自律神經教學簡報</h1>
+    <p>把自己整理的 12 篇《臺灣常用藥物講義》ingest 成一個互相連結、可查詢、可檢查的 Wiki，再只用 Wiki 的內容，做出一份給初學者的教學 HTML 簡報。</p>
+    <div class="stats">
+      <div><b>12</b><span>篇來源講義</span></div>
+      <div><b>13</b><span>概念頁（AI 撰寫）</span></div>
+      <div><b>83</b><span>類別頁（腳本）</span></div>
+      <div><b>590</b><span>藥名索引</span></div>
+      <div><b>16</b><span>張投影片</span></div>
+    </div>
+  </section>
+
+  <div class="cards">
+    <a class="card" href="slides/index.html"><h3>教學簡報 →</h3><p>自律神經藥物入門：從受體推出藥效。每張投影片標示引用的 Wiki 頁。</p></a>
+    <a class="card" href="wiki.html#index"><h3>LLM Wiki →</h3><p>概念頁、類別頁、跨篇藥名索引、字尾總表、臨床情境總表。</p></a>
+    <a class="card" href="wiki.html#concept-potassium"><h3>跨篇連結示範 →</h3><p>「受體與血鉀」：答案分散在自律神經、泌尿、內分泌三篇講義。</p></a>
+  </div>
+
+  <section class="section" id="graph">
+    <h2>Loop／Graph 設計</h2>
+    <p>兩個迴圈：上排是「建 Wiki」，下排是「用 Wiki 產生簡報」。每個 LLM 生成節點後面都接一個檢查節點，檢查失敗就回頭重做；<b>簡報缺的事實要回到 Wiki 補，不能在簡報裡自己加</b>。</p>
+    <div class="graph">
+      <svg viewBox="0 0 960 470" role="img" aria-labelledby="gt gd">
+        <title id="gt">LLM Wiki 與簡報的處理流程圖</title>
+        <desc id="gd">上排：討論、Ingest、Compile、撰寫概念頁、Lint Wiki；Lint 失敗回到撰寫或 Ingest。通過後到下排：Query、生成簡報、Check、人工審稿、發布。Check 或審稿失敗回到生成簡報；Wiki 沒有的事實回到撰寫概念頁。</desc>
+        <defs>
+          <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="var(--ink3)"/></marker>
+          <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="var(--warn)"/></marker>
+        </defs>
+        <!-- 迴圈名稱 -->
+        <text x="10" y="150" font-size="13" fill="var(--ink3)" font-weight="700" letter-spacing="1">迴圈 A：建 Wiki</text>
+        <text x="10" y="300" font-size="13" fill="var(--ink3)" font-weight="700" letter-spacing="1">迴圈 B：做簡報</text>
+        <!-- 上排節點 -->
+        <g font-size="15" text-anchor="middle">
+          <rect x="10" y="70" width="150" height="58" rx="12" fill="var(--sym-soft)" stroke="var(--sym)"/><text x="85" y="95" fill="var(--sym)" font-weight="700">0 討論</text><text x="85" y="115" font-size="12" fill="var(--ink2)">人：定主題與粒度</text>
+        </g>
+        <g font-size="15" text-anchor="middle">
+          <rect x="200" y="70" width="150" height="58" rx="12" fill="var(--para-soft)" stroke="var(--para)"/><text x="275" y="95" fill="var(--para)" font-weight="700">1 Ingest</text><text x="275" y="115" font-size="12" fill="var(--ink2)">Docs XML → raw/</text>
+          <rect x="390" y="70" width="150" height="58" rx="12" fill="var(--para-soft)" stroke="var(--para)"/><text x="465" y="95" fill="var(--para)" font-weight="700">2 Compile</text><text x="465" y="115" font-size="12" fill="var(--ink2)">類別頁、索引</text>
+          <rect x="580" y="70" width="150" height="58" rx="12" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="655" y="95" fill="var(--accent-ink)" font-weight="700">3 撰寫概念頁</text><text x="655" y="115" font-size="12" fill="var(--ink2)">LLM，附來源</text>
+          <rect x="790" y="70" width="150" height="58" rx="12" fill="var(--warn-soft)" stroke="var(--warn)"/><text x="865" y="95" fill="var(--warn)" font-weight="700">4 Lint Wiki</text><text x="865" y="115" font-size="12" fill="var(--ink2)">L1–L8、W9</text>
+        </g>
+        <!-- 上排前進邊 -->
+        <g stroke="var(--ink3)" stroke-width="2" fill="none" marker-end="url(#a)">
+          <line x1="160" y1="99" x2="197" y2="99"/><line x1="350" y1="99" x2="387" y2="99"/><line x1="540" y1="99" x2="577" y2="99"/><line x1="730" y1="99" x2="787" y2="99"/>
+        </g>
+        <!-- 上排回頭邊 -->
+        <g stroke="var(--warn)" stroke-width="2" fill="none" marker-end="url(#aw)" stroke-dasharray="6 4">
+          <path d="M840 70 C 820 34, 700 34, 680 68"/>
+          <path d="M890 70 C 880 6, 300 6, 285 68"/>
+        </g>
+        <text x="760" y="50" text-anchor="middle" font-size="12" fill="var(--warn)">錯誤 → 重寫（實跑 3 輪）</text>
+        <text x="560" y="18" text-anchor="middle" font-size="12" fill="var(--warn)">轉換錯誤 → 重新 ingest</text>
+        <!-- 往下：通過 -->
+        <g stroke="var(--ink3)" stroke-width="2" fill="none" marker-end="url(#a)"><line x1="865" y1="128" x2="865" y2="246"/></g>
+        <text x="875" y="192" font-size="12" fill="var(--ink2)">通過</text>
+        <!-- 下排節點（右到左） -->
+        <g font-size="15" text-anchor="middle">
+          <rect x="790" y="250" width="150" height="58" rx="12" fill="var(--para-soft)" stroke="var(--para)"/><text x="865" y="275" fill="var(--para)" font-weight="700">5 Query</text><text x="865" y="295" font-size="12" fill="var(--ink2)">index → 頁面 → 大綱</text>
+          <rect x="580" y="250" width="150" height="58" rx="12" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="655" y="275" fill="var(--accent-ink)" font-weight="700">6 生成簡報</text><text x="655" y="295" font-size="12" fill="var(--ink2)">LLM，標 data-cite</text>
+          <rect x="390" y="250" width="150" height="58" rx="12" fill="var(--warn-soft)" stroke="var(--warn)"/><text x="465" y="275" fill="var(--warn)" font-weight="700">7 Check</text><text x="465" y="295" font-size="12" fill="var(--ink2)">S1–S5、W6</text>
+          <rect x="200" y="250" width="150" height="58" rx="12" fill="var(--sym-soft)" stroke="var(--sym)"/><text x="275" y="275" fill="var(--sym)" font-weight="700">8 人工審稿</text><text x="275" y="295" font-size="12" fill="var(--ink2)">逐句對照引用頁</text>
+          <rect x="10" y="250" width="150" height="58" rx="12" fill="var(--paper2)" stroke="var(--line)"/><text x="85" y="275" fill="var(--ink)" font-weight="700">9 發布</text><text x="85" y="295" font-size="12" fill="var(--ink2)">Pages、截圖檢查</text>
+        </g>
+        <g stroke="var(--ink3)" stroke-width="2" fill="none" marker-end="url(#a)">
+          <line x1="790" y1="279" x2="733" y2="279"/><line x1="580" y1="279" x2="543" y2="279"/><line x1="390" y1="279" x2="353" y2="279"/><line x1="200" y1="279" x2="163" y2="279"/>
+        </g>
+        <!-- 下排回頭邊 -->
+        <g stroke="var(--warn)" stroke-width="2" fill="none" marker-end="url(#aw)" stroke-dasharray="6 4">
+          <path d="M465 308 C 485 360, 635 360, 650 312"/>
+          <path d="M275 308 C 290 420, 650 420, 670 312"/>
+          <path d="M440 250 C 470 190, 610 180, 640 132"/>
+        </g>
+        <text x="560" y="352" text-anchor="middle" font-size="12" fill="var(--warn)">藥名／數字不在引用頁</text>
+        <text x="470" y="412" text-anchor="middle" font-size="12" fill="var(--warn)">多加的句子、推理寫成事實 → 重新生成（實跑抓到 4 處）</text>
+        <text x="480" y="186" font-size="12" fill="var(--warn)">Wiki 沒有這個事實 → 回 Wiki 補</text>
+        <!-- 圖例 -->
+        <g font-size="12" fill="var(--ink2)">
+          <rect x="10" y="440" width="14" height="14" rx="3" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="30" y="452">LLM 生成</text>
+          <rect x="110" y="440" width="14" height="14" rx="3" fill="var(--para-soft)" stroke="var(--para)"/><text x="130" y="452">腳本（確定性）</text>
+          <rect x="235" y="440" width="14" height="14" rx="3" fill="var(--warn-soft)" stroke="var(--warn)"/><text x="255" y="452">自動檢查</text>
+          <rect x="335" y="440" width="14" height="14" rx="3" fill="var(--sym-soft)" stroke="var(--sym)"/><text x="355" y="452">人</text>
+          <line x1="400" y1="447" x2="440" y2="447" stroke="var(--warn)" stroke-width="2" stroke-dasharray="6 4"/><text x="448" y="452">失敗時回頭</text>
+        </g>
+      </svg>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <div class="card"><h3>哪些步驟會重複</h3><p>3↔4（寫概念頁與 lint）、6↔7↔8（生成簡報、檢查、審稿）。Ingest 與 Compile 只在來源更新時重跑，而且是腳本，結果可重現。</p></div>
+      <div class="card"><h3>哪裡要檢查或重新生成</h3><p>每個 LLM 節點後面都有檢查：概念頁每段要有〔來源〕、藥名與數字要出現在引用的講義章節；簡報的藥名與數字要出現在引用的 Wiki 頁。</p></div>
+      <div class="card"><h3>為什麼這樣設計</h3><p>藥物資訊錯一個數字就可能出事。把「整理」交給腳本、「解釋」交給 LLM，再讓每個 LLM 輸出都能追回來源，錯誤才會在發布前被抓到。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="run">
+    <h2>一次實際執行的結果（2026-11-17）</h2>
+    <div class="tw prose"><table>
+      <thead><tr><th>節點</th><th>發生什麼事</th><th>處理</th></tr></thead>
+      <tbody>
+        <tr><td>1 Ingest</td><td>Docs 匯出以 base64 回傳，12 篇太大；改用讀取整頁 XML 後，有 2 篇沒有存成檔案；對話紀錄 JSON 含控制字元而解析失敗</td><td>3 次失敗後成功，12 篇、189 張表格</td></tr>
+        <tr><td>2 Compile</td><td>中文緊貼英文的藥名抓不到；商品名被當成藥名</td><td>修正正規式、加入商品名排除</td></tr>
+        <tr><td>3↔4 Wiki</td><td>lint：9 → 1 → 0 個錯誤；另抓到 1 處引用錯章節</td><td>補來源、標示「推理／說明」</td></tr>
+        <tr><td>6↔7↔8 簡報</td><td>腳本檢查 0 錯誤，但人工審稿找到 4 處：自己多加的句子 ×2、測驗題前提無來源、推理寫成事實</td><td>修改後重跑檢查</td></tr>
+      </tbody>
+    </table></div>
+    <p class="muted" style="font-size:.9rem">完整紀錄：<a href="https://github.com/joselan4288/drug-llm-wiki/blob/main/logs/run-2026-11-17.md">logs/run-2026-11-17.md</a>・各輪 lint／check 輸出在 <a href="https://github.com/joselan4288/drug-llm-wiki/tree/main/logs">logs/</a></p>
+  </section>
+
+  <section class="section" id="reflect">
+    <h2>反思</h2>
+    <div class="q"><h3>哪一個節點最常出錯？</h3>
+      <p><b>LLM 生成內容的兩個節點</b>（3 撰寫概念頁、6 生成簡報）。錯誤型態幾乎都一樣：<b>在來源之外多說一點</b>，例如補一句聽起來合理的話、把推理寫成事實、引用到隔壁章節。Ingest 失敗次數也多（3 次），但都是一次性的工具問題，修好就不再發生；生成節點的錯誤則每次都可能出現。</p></div>
+    <div class="q"><h3>把檢查往前移到哪一步？</h3>
+      <p>原本只在簡報後面檢查。但簡報的事實都來自 Wiki，所以把檢查<b>前移到 Wiki 的 lint</b>：</p>
+      <ul><li>L5：概念頁每段都要有〔來源〕，自己的解釋必須標「推理」或「說明」</li><li>L6：段落裡的藥名與劑量必須出現在它引用的講義章節</li><li>W9：把簡報用的「中文句子重疊度」檢查也套到 Wiki 上——第一次跑就抓到 1 處引用錯章節</li></ul>
+      <p>這樣簡報只要通過「藥名與數字都在引用的 Wiki 頁裡」，就間接追到了原始講義。</p></div>
+    <div class="q"><h3>有沒有因此修改 workflow？為什麼？</h3>
+      <p>有三處。① 在自動檢查後面<b>加了「人工審稿」節點</b>：腳本只看英文藥名與數字，中文多加的一句話（例如「病人與旁人都容易忽略」）它看不到，而新加的重疊度警告雜訊太多、也沒抓到這句。② <b>加了一條回頭邊</b>：簡報需要但 Wiki 沒有的事實，要回到 Wiki 補（再過一次 lint），不能在簡報裡直接寫。③ 驗證檢查器本身：故意改錯資料，發現 L6 抓得到錯的數字，卻抓不到「Dobutamine 換成 Dopamine」，因為兩個藥都在同一節。所以 L6 只能當「存在性」檢查，配對關係仍要靠人工審稿。</p></div>
+  </section>
+</main>
+<footer class="foot">內容僅供學習，不構成醫療建議。規則：<a href="https://github.com/joselan4288/drug-llm-wiki/blob/main/CLAUDE.md">CLAUDE.md</a>・原始碼：<a href="https://github.com/joselan4288/drug-llm-wiki">GitHub</a></footer>
+<script>
+document.getElementById('theme').onclick = () => {
+  const r = document.documentElement;
+  const dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem('wiki-theme', r.dataset.theme); } catch (_) {}
+};
+try { const t = localStorage.getItem('wiki-theme'); if (t) document.documentElement.dataset.theme = t; } catch (_) {}
+</script>
+</body>
+</html>
